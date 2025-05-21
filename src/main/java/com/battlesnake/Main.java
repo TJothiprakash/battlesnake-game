@@ -8,7 +8,11 @@ public class Main {
     public static void main(String[] args) {
         port(8080);
 
-        get("/", (req, res) -> "Battlesnake AI is running!");
+        // Respond to root path `/` with SnakeConfig JSON
+        get("/", (req, res) -> {
+            res.type("application/json");
+            return new Gson().toJson(new SnakeConfig());
+        });
 
         post("/start", (req, res) -> {
             res.type("application/json");

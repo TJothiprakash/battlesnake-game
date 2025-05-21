@@ -21,10 +21,22 @@ public class Main {
 
         post("/move", (req, res) -> {
             res.type("application/json");
+
             GameState gameState = new Gson().fromJson(req.body(), GameState.class);
-            String move = MoveDecider.getNextMove(gameState);
+            System.out.println("Received game state on turn " + gameState.turn);
+            System.out.println(req.body());  // Log the full input JSON
+
+            String move;
+            try {
+                move = MoveDecider.getNextMove(gameState);
+            } catch (Exception e) {
+                e.printStackTrace();
+                move = "up"; // fallback move
+            }
+
             return "{\"move\":\"" + move + "\"}";
         });
+
 
         post("/end", (req, res) -> {
             System.out.println("Game Over!");
